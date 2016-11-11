@@ -20,11 +20,11 @@ public class ClientChat {
 	private int port;
 	private String nom;
 	private String topic;
-	
+
 	public ClientChat(int port, String serveur) throws UnknownHostException, IOException{
 		this.serveur = serveur;
 		this.port = port ;
-		
+
 		// Activation d'une communication avec le serveur
 		communication = new Socket(serveur, port);
 		// Creation des flux sortant et entrant
@@ -204,35 +204,35 @@ public class ClientChat {
 	}
 
 	private void vue_topic(String topic) throws IOException{
-		
+
 		boolean ouvert =true;
-		
+
 		//Lancement d'un thread du topic choisi
 		new TopicThread(topic,communication);
-		
+
 		//Message de bienvenue
-		
+
 		System.out.println("Bienvenue dans le topic " + topic);
 		System.out.println("----------------------------------------------------------");
 		System.out.println("Commandes : ");
 		System.out.println("/exit pour quitter ce topic");
 		System.out.println("----------------------------------------------------------");
-		
+
 		do{
-		
-		//Affichage du pseudo
-		System.out.println(nom + " : ");
-		
-		//On récupère le texte tapé par l'utilisateur
-		String msg = commande.next();
-		
-		if(msg.equalsIgnoreCase("/exit")){
-			ouvert=false;
-			vue_chat();
-		}
-		else{
-			this.emission.writeUTF(nom + " : " + msg);
-		}
+
+			//Affichage du pseudo
+			System.out.println(nom + " : ");
+
+			//On récupère le texte tapé par l'utilisateur
+			String msg = commande.next();
+
+			if(msg.equalsIgnoreCase("/exit")){
+				ouvert=false;
+				vue_chat();
+			}
+			else{
+				this.emission.writeUTF(nom + " : " + msg);
+			}
 		}while (ouvert);
 	}
 

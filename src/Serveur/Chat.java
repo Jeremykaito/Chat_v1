@@ -101,7 +101,28 @@ public class Chat {
 		}
 		return s;
 	}
+	
+	public boolean creationTopic(String titre, String description) {
+		for(Topic t : liste_topics) {
+			if(titre.equalsIgnoreCase(t.getTitre())){
+				return false;
+			}
+		}
+		//Création d'un nouveau topic s'il n'existe pas
+		Topic topic = new Topic(titre, description);
+		liste_topics.add(topic); //Ajout de l'utilisateur dans la liste communaute
+		return true;
+	}
 
+	public boolean rejoindreTopic(String titre) {
+		for(Topic t : liste_topics) {
+			if(titre.equalsIgnoreCase(t.getTitre())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void chargerChat() throws ChargerChatException,FileNotFoundException {
 
 		//Chargement des utilisateurs
@@ -183,5 +204,6 @@ public class Chat {
 			oos.close();
 		}
 	}
+
 
 }
