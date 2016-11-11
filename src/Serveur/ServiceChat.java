@@ -26,30 +26,30 @@ public class ServiceChat implements Runnable{
 			String pseudo;
 			String mdp;
 			boolean rep;
-			switch(choix) {
+			
+			while(true){
+				switch(choix) {
 
-			case "connexion":
-				pseudo = dis.readUTF();
-				mdp = dis.readUTF();
-				rep = chat.connexion(pseudo,mdp);
-				dos.writeBoolean(rep);
-				break;
+				case "connexion":
+					pseudo = dis.readUTF();
+					mdp = dis.readUTF();
+					rep = chat.connexion(pseudo,mdp);
+					dos.writeBoolean(rep);
+					break;
 
-			case "inscription":
-				pseudo = dis.readUTF();
-				mdp = dis.readUTF();
-				rep = chat.creationUtilisateur(pseudo,mdp);
-				dos.writeBoolean(rep);
-				break;
+				case "inscription":
+					pseudo = dis.readUTF();
+					mdp = dis.readUTF();
+					rep = chat.creationUtilisateur(pseudo,mdp);
+					dos.writeBoolean(rep);
+					break;
 
-			case "quitter":
-				break;
-			default :
-				break;
+				case "quitter":
+					break;
+				default :
+					break;
+				}
 			}
-
-
-
 		}catch(Exception e){
 			e.printStackTrace();
 		}
