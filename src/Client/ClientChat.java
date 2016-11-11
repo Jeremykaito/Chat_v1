@@ -216,9 +216,7 @@ public class ClientChat {
 		System.out.println("----------------------------------------------------------");
 		System.out.println("Commandes : ");
 		System.out.println("/exit pour quitter ce topic");
-		System.out.println("/old pour voir les messages antérieurs à votre arrivée.");
 		System.out.println("----------------------------------------------------------");
-		System.out.println("Entamez la conversation :");
 		
 		do{
 		

@@ -13,6 +13,7 @@ public class TopicThread implements Runnable {
 	private String title;
 
 	public TopicThread(String title, Socket communication) {
+		
 		// Activation d'une communication avec le serveur
 		this.communication = communication;
 		this.title = title;
@@ -40,13 +41,8 @@ public class TopicThread implements Runnable {
 				}
 
 				else {
-					// si la commande n'est ni "total", ni "quit", on informe l'utilisateur et on lui donne une aide
-					System.out.println("Cette commande n'est pas supportee");
-					System.out.println("Quitter : \"quit\"");
-					System.out.println("Nombre de connectes : \"total\"");
-					System.out.println("--------");
+	
 				}
-				System.out.flush(); // on affiche tout ce qui est en attente dans le flux
 			}
 		}
 		catch (IOException e) {}*/
