@@ -20,8 +20,8 @@ public class Topic implements Serializable{
 	 * @param description, court énoncé du sujet 
 	 */
 	public Topic(String titre, String description) {
-		this.titre = titre;
-		this.description = description;
+		this.setTitre(titre);
+		this.setDescription(description);
 		//todo date
 		discussion = new ArrayList();
 		
@@ -29,5 +29,21 @@ public class Topic implements Serializable{
 	
 	public void addComment(Message comment){
 		discussion.add(comment);
+	}
+
+	public String getTitre() {
+		return titre;
+	}
+
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

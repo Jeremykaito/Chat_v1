@@ -23,6 +23,7 @@ public class ServiceChat implements Runnable{
 			String choix = dis.readUTF();
 			String pseudo;
 			String mdp;
+			String titre;
 			boolean rep;
 			
 			while(true){
@@ -41,7 +42,18 @@ public class ServiceChat implements Runnable{
 					rep = chat.creationUtilisateur(pseudo,mdp);
 					dos.writeBoolean(rep);
 					break;
-
+					
+				case "rejoindreTopic" :
+					titre = dis.readUTF();
+					rep = chat.rejoindreTopic(titre);
+					dos.writeBoolean(rep);
+					break;
+					
+				case "topic" :
+					System.out.println(dis.readUTF());
+					System.out.println(dis.readUTF());
+			
+					break;
 				case "quitter":
 					break;
 				default :
