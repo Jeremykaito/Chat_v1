@@ -14,10 +14,14 @@ public class ClientChat {
 	private DataInputStream reception;
 	private Scanner commande;
 	private String choix;
-	private CommandeClient co;
+	private String serveur;
+	private int port;
 	private String nom;
-
+	private String topic;
+	
 	public ClientChat(int port, String serveur) throws UnknownHostException, IOException{
+		this.serveur = serveur;
+		this.port = port ;
 		// Activation d'une communication avec le serveur
 		communication = new Socket(serveur, port);
 		// Creation des flux sortant et entrant
@@ -29,6 +33,7 @@ public class ClientChat {
 		//Creation de l'entrée clavier
 		commande = new Scanner(System.in);
 		choix="";
+		topic = "";
 		//Accueil
 		vue_accueil();
 	}
@@ -81,8 +86,8 @@ public class ClientChat {
 
 		//Vérification de la réponse serveur reçue
 		if(this.reception.readBoolean()){
-			//Accès au chat
 			nom = pseudo;
+			//Accès au chat
 			vue_chat();
 		}
 		else System.out.println("Identification incorrecte!");
@@ -123,13 +128,13 @@ public class ClientChat {
 	public void  vue_chat() throws IOException{
 
 		boolean ouvert = true;
-		//
+		System.out.println("- Bonjour "+ nom+" -");
 		do{
 			//Menu
 			System.out.println("1 - Rejoindre un topic");
 			System.out.println("2 - Créer un topic");
 			System.out.println("3 - Déconnexion");
-			System.out.println("Que voulez-vous faire ?");
+			System.out.println("Que voulez-vous faire ? (1 - 3)");
 
 			//Interprétation de la commande
 			choix = commande.next();
@@ -166,6 +171,7 @@ public class ClientChat {
 		titre = commande.next();
 		System.out.println("Veuillez entrer une description :");
 		description = commande.next();
+
 		//Envoi des données au serveur
 		this.emission.writeUTF("creationTopic");
 		this.emission.writeUTF(titre);
@@ -187,25 +193,19 @@ public class ClientChat {
 		//Envoi des données au serveur
 		this.emission.writeUTF("rejoindreTopic");
 		this.emission.writeUTF(titre);
-		boolean a=this.reception.readBoolean();
-		if(a) {
-			System.out.println("Entrée dans le topic");
-			vue_topic();
+
+		if(this.reception.readBoolean()) {
+			System.out.println("Entrée dans le topic...");
+			topic = titre;
+			vue_topic(topic);
 		}
 		else System.out.println("Désolé aucun topic correspondant");
 	}
 
-	private void vue_topic() throws IOException{
-		//Données utilisateur
-				String titre;
+	private void vue_topic(String topic) throws IOException{
+		//Lancement d'un thread du topic choisi
+		new TopicThread(topic,communication);
 
-				//Saisie des données par l'utilisateur
-				System.out.println("Veuillez entrer le titre :");
-				titre = commande.next();
-
-				//Envoi des données au serveur
-				this.emission.writeUTF("rejoindreTopic");
-				this.emission.writeUTF(titre);
 	}
 
 }
