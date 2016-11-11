@@ -21,7 +21,7 @@ public class ServeurChat {
 		this.port=port;
 		sock = new ServerSocket(port);
 		this.chat = new Chat();
-		new CommandeServeur();
+		new CommandeServeur(chat);
 	}
 	/**
 	 * @brief Accepter les connexions entrantes
@@ -36,8 +36,5 @@ public class ServeurChat {
 			new Thread(new ServiceChat(communication,chat)).start();
 			System.out.println("Un utilisateur accède  au Chat. Ouverture d'une connexion...");
 		}while(true);
-		
-		this.chat.sauvegarderChat();
 	}
-
 }

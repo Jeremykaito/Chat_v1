@@ -20,6 +20,7 @@ public class Chat {
 	private String nomFichierUtilisateurs; //nom du fichier de sauvegarde des utilisateurs
 	private String nomFichierTopics; //nom du fichier de sauvegarde des topics
 	private int nbUsers;
+	private int nbConnectedUsers;
 
 	/**
 	 * @brief Constructeur via les données chargées 
@@ -33,6 +34,8 @@ public class Chat {
 		nomFichierUtilisateurs="./users.obj";
 		nomFichierTopics="./topics.obj";
 		nbUsers = 0;
+		nbConnectedUsers=0;
+		
 		// Chargement du chat sauvegardé
 		try {
 			chargerChat();
@@ -45,7 +48,11 @@ public class Chat {
 	public int getNbUsers() {
 		return nbUsers;
 	}
-
+	
+	public int getNbConnectedUsers() {
+		return nbConnectedUsers;
+	}
+	
 	public void setNbUsers(int nbUsers) {
 		this.nbUsers = nbUsers;
 	}
@@ -78,6 +85,7 @@ public class Chat {
 	public boolean connexion(String pseudo, String mdp) {
 		for(Utilisateur u : communaute) {
 			if(pseudo.equals(u.getPseudo()) && mdp.equals(u.getMdp()))
+				nbConnectedUsers++;
 				return true;
 		}
 		return false;
