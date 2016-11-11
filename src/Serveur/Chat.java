@@ -56,6 +56,10 @@ public class Chat {
 	public void setNbUsers(int nbUsers) {
 		this.nbUsers = nbUsers;
 	}
+	
+	public String getTopics() {
+		return liste_topics.toString();
+	}
 
 	/**
 	 * @brief Creation d'un utilisateur

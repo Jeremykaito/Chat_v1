@@ -184,8 +184,13 @@ public class ClientChat {
 	}
 
 	private void vue_rejoindreTopic() throws IOException {
+		
 		//Données utilisateur
 		String titre;
+		
+		//Affichage des topics existants
+		this.emission.writeUTF("listTopics");
+		System.out.println(this.reception.readUTF());
 
 		//Saisie des données par l'utilisateur
 		System.out.println("Veuillez entrer le titre :");
