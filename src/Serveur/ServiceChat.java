@@ -18,44 +18,54 @@ public class ServiceChat implements Runnable{
 	@Override
 	public synchronized void run() {
 		try{
-			DataInputStream dis = new DataInputStream(communication.getInputStream());
-			DataOutputStream dos = new DataOutputStream(communication.getOutputStream());
-			String choix = dis.readUTF();
+			DataInputStream reception = new DataInputStream(communication.getInputStream());
+			DataOutputStream emission = new DataOutputStream(communication.getOutputStream());
+			String choix = reception.readUTF();
 			String pseudo;
 			String mdp;
 			String titre;
+			String description;
 			boolean rep;
 			
 			while(true){
 				switch(choix) {
 
 				case "connexion":
-					pseudo = dis.readUTF();
-					mdp = dis.readUTF();
+					pseudo = reception.readUTF();
+					mdp = reception.readUTF();
 					rep = chat.connexion(pseudo,mdp);
-					dos.writeBoolean(rep);
+					emission.writeBoolean(rep);
 					break;
 
 				case "inscription":
-					pseudo = dis.readUTF();
-					mdp = dis.readUTF();
+					pseudo = reception.readUTF();
+					mdp = reception.readUTF();
 					rep = chat.creationUtilisateur(pseudo,mdp);
-					dos.writeBoolean(rep);
+					emission.writeBoolean(rep);
 					break;
 					
 				case "rejoindreTopic" :
-					titre = dis.readUTF();
+					titre = reception.readUTF();
 					rep = chat.rejoindreTopic(titre);
-					dos.writeBoolean(rep);
+					emission.writeBoolean(rep);
+					break;
+					
+				case "CreationTopic" :
+					titre = reception.readUTF();
+					description = reception.readUTF();
+					rep = chat.creationTopic(titre,description);
+					emission.writeBoolean(rep);
 					break;
 					
 				case "topic" :
-					System.out.println(dis.readUTF());
-					System.out.println(dis.readUTF());
+
+					System.out.println(reception.readUTF());
+					System.out.println(reception.readUTF());
+
 					break;
 					
 				case "listTopics" :
-					dos.writeUTF(chat.getTopics());
+					emission.writeUTF(chat.getTopics());
 					break;
 					
 				case "quitter":
