@@ -14,7 +14,7 @@ public class MainClient {
 		} catch (UnknownHostException e) {
 			System.out.println("Serveur inconnu");
 		} catch (IOException e) {
-			System.out.println("Erreur de connexion au serveur. Reessayez plus tard.");
+			System.out.println("Erreur de connexion au serveur. Réessayez plus tard.");
 		}
 
 	}

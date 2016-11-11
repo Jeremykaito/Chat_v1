@@ -39,7 +39,7 @@ public class Chat {
 		// Chargement du chat sauvegardé
 		try {
 			chargerChat();
-			System.out.println("Chargement réussi.");
+			System.out.println("Chargement du chat réussi.");
 		} catch (FileNotFoundException | ChargerChatException e) {
 			System.out.println("Erreur lors du chargement des données. Un nouveau chat a été créé.");
 		}

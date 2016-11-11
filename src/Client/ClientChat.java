@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import Serveur.Utilisateur;
+
 
 public class ClientChat {
 
@@ -22,14 +24,13 @@ public class ClientChat {
 	public ClientChat(int port, String serveur) throws UnknownHostException, IOException{
 		this.serveur = serveur;
 		this.port = port ;
+		
 		// Activation d'une communication avec le serveur
 		communication = new Socket(serveur, port);
 		// Creation des flux sortant et entrant
 		emission = new DataOutputStream(communication.getOutputStream());
 		reception = new DataInputStream(communication.getInputStream());
 
-		int i = reception.read();
-		System.out.println(i);
 		//Creation de l'entrée clavier
 		commande = new Scanner(System.in);
 		choix="";
@@ -199,13 +200,42 @@ public class ClientChat {
 			topic = titre;
 			vue_topic(topic);
 		}
-		else System.out.println("Désolé aucun topic correspondant");
+		else System.out.println("Désolé aucun topic correspondant.");
 	}
 
 	private void vue_topic(String topic) throws IOException{
+		
+		boolean ouvert =true;
+		
 		//Lancement d'un thread du topic choisi
 		new TopicThread(topic,communication);
-
+		
+		//Message de bienvenue
+		
+		System.out.println("Bienvenue dans le topic " + topic);
+		System.out.println("----------------------------------------------------------");
+		System.out.println("Commandes : ");
+		System.out.println("/exit pour quitter ce topic");
+		System.out.println("/old pour voir les messages antérieurs à votre arrivée.");
+		System.out.println("----------------------------------------------------------");
+		System.out.println("Entamez la conversation :");
+		
+		do{
+		
+		//Affichage du pseudo
+		System.out.println(nom + " : ");
+		
+		//On récupère le texte tapé par l'utilisateur
+		String msg = commande.next();
+		
+		if(msg.equalsIgnoreCase("/exit")){
+			ouvert=false;
+			vue_chat();
+		}
+		else{
+			this.emission.writeUTF(nom + " : " + msg);
+		}
+		}while (ouvert);
 	}
 
 }

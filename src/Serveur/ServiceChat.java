@@ -20,8 +20,6 @@ public class ServiceChat implements Runnable{
 		try{
 			DataInputStream dis = new DataInputStream(communication.getInputStream());
 			DataOutputStream dos = new DataOutputStream(communication.getOutputStream());
-			chat.setNbUsers(chat.getNbUsers()+1);
-			dos.write(chat.getNbUsers());
 			String choix = dis.readUTF();
 			String pseudo;
 			String mdp;

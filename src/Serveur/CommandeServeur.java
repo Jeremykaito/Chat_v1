@@ -28,8 +28,10 @@ public class CommandeServeur implements Runnable{
 		{
 			while ((commande=in.readLine())!=null)
 			{
-				if (commande.equalsIgnoreCase("save")) // commande "save" detectée ...
+				if (commande.equalsIgnoreCase("save")){ // commande "save" detectée ...
 					this.chat.sauvegarderChat(); // ... on sauvegarde le chat
+					System.out.println("Sauvegarde du chat réussie.");
+				}
 				else if (commande.equalsIgnoreCase("total")) // commande "total" detectée ...
 					System.out.println(this.chat.getNbConnectedUsers()+ " sont connectés actuellement."); // ... on affiche le nombre d'utilisateurs connectés
 				else if (commande.equalsIgnoreCase("exit")) // commande "exit" detectée ...
@@ -49,9 +51,9 @@ public class CommandeServeur implements Runnable{
 	public void aide(){
 		System.out.println("---------------------------------------------");
 		System.out.println("Voici les commandes que vous pouvez taper : ");
-		System.out.println("Sauvegarder : \"save\"");
-		System.out.println("Nombre d'utilisateurs connectés : \"total\"");
-		System.out.println("Fermer le serveur : \"exit\"");
+		System.out.println("Sauvegarder le chat : \"/save\"");
+		System.out.println("Nombre d'utilisateurs connectés : \"/total\"");
+		System.out.println("Fermer le serveur : \"/exit\"");
 		System.out.println("---------------------------------------------");
 	}
 		
