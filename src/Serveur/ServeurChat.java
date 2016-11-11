@@ -21,12 +21,14 @@ public class ServeurChat {
 		this.port=port;
 		sock = new ServerSocket(port);
 		this.chat = new Chat();
+		new CommandeServeur();
 	}
 	/**
 	 * @brief Accepter les connexions entrantes
 	 * @throws IOException
 	 */
 	public void accepterConnexion() throws IOException {
+		
 		do {
 			//Ouverture de la connexion
 			Socket communication = sock.accept();
