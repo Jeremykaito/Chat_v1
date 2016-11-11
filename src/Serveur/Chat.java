@@ -17,7 +17,8 @@ public class Chat {
 	//Variables
 	private ArrayList<Utilisateur> communaute; 	// La liste des utilisateurs
 	private ArrayList<Topic> liste_topics; // Liste des sujets du chat
-	private String nomFichierChat; //nom du fichier de sauvegarde du chat
+	private String nomFichierUtilisateurs; //nom du fichier de sauvegarde des utilisateurs
+	private String nomFichierTopics; //nom du fichier de sauvegarde des topics
 	private int nbUsers;
 
 	/**
@@ -29,7 +30,8 @@ public class Chat {
 		//Initialisation
 		liste_topics = new ArrayList();
 		communaute = new ArrayList();
-		nomFichierChat="./chat.obj";
+		nomFichierUtilisateurs="./users.obj";
+		nomFichierTopics="./topics.obj";
 		nbUsers = 0;
 		// Chargement du chat sauvegardé
 		try {
@@ -94,11 +96,11 @@ public class Chat {
 
 	public void chargerChat() throws ChargerChatException,FileNotFoundException {
 
-		try (InputStream is = new FileInputStream(nomFichierChat)){
+		//Chargement des utilisateurs
+		try (InputStream is = new FileInputStream(nomFichierUtilisateurs)){
 			ObjectInputStream ios = new ObjectInputStream(is);
 			while (is.available() > 0) {
 				communaute.add((Utilisateur) ios.readObject()); //On lit les utilisateurs depuis le fichier
-				liste_topics.add((Topic) ios.readObject()); //On lit les topics depuis le fichier
 			}
 			ios.close();
 		}
@@ -109,28 +111,68 @@ public class Chat {
 
 		catch(IOException | ClassNotFoundException  e){ //Si une autre erreur apparaît
 			e.printStackTrace();
-			throw new ChargerChatException("Erreur durant le chargement des données.");
+			throw new ChargerChatException("Erreur durant le chargement des utilisateurs.");
+		}
+		
+		//Chargement des topics
+		try (InputStream is = new FileInputStream(nomFichierTopics)){
+			ObjectInputStream ios = new ObjectInputStream(is);
+			while (is.available() > 0) {
+				liste_topics.add((Topic) ios.readObject()); //On lit les topics depuis le fichier			}
+			ios.close();
+			}
+		}
+		catch(FileNotFoundException e){ //Si le fichier n'est pas trouvé
+
+			throw new FileNotFoundException();
+		}
+
+		catch(IOException | ClassNotFoundException  e){ //Si une autre erreur apparaît
+			e.printStackTrace();
+			throw new ChargerChatException("Erreur durant le chargement des topics.");
 		}
 	}
 
-	public void sauvegarderChat() throws SauvegarderChatException {
-		Utilisateur[] utilisateurs=new Utilisateur[0];
-		Topic[] topics=new Topic[0];
-		utilisateurs=communaute.toArray(utilisateurs);
-		topics=liste_topics.toArray(topics);
-
-		try (OutputStream os = new FileOutputStream(nomFichierChat);) {
-			ObjectOutputStream oos = new ObjectOutputStream(os);
+	public void sauvegarderChat() throws SauvegarderChatException, IOException {
+		
+		ObjectOutputStream oos = null;
+		
+		//Sauvegarde des utilisateurs
+		try (OutputStream os = new FileOutputStream(nomFichierUtilisateurs);) {
+			
+			//Récupération des utilisateurs
+			Utilisateur[] utilisateurs=new Utilisateur[0];
+			utilisateurs=communaute.toArray(utilisateurs);
+			
+			//Ecriture dans le fichier
+			oos = new ObjectOutputStream(os);
 			for(Utilisateur util : utilisateurs){
 				oos.writeObject(util);
 			}
+			oos.flush();
+		} catch (IOException e ) {
+			throw new SauvegarderChatException("Erreur durant la sauvegarde des utilisateurs.");
+		}finally {
+			oos.close();
+		}
+		
+		//Sauvegarde des topics
+		try (OutputStream os = new FileOutputStream(nomFichierTopics);) {
+			
+			//Récupération des utilisateurs
+			Topic[] topics =new Topic[0];
+			topics=liste_topics.toArray(topics);
+			
+			//Ecriture dans le fichier
+			oos = new ObjectOutputStream(os);
 			for(Topic top : topics){
 				oos.writeObject(top);
 			}
 			oos.flush();
-			oos.close();
 		} catch (IOException e ) {
-			throw new SauvegarderChatException("Erreur durant la sauvegarde des données.");
+			throw new SauvegarderChatException("Erreur durant la sauvegarde des topics.");
+		}finally {
+			oos.close();
 		}
 	}
 

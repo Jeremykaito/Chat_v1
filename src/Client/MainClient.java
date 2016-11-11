@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 public class MainClient {
 
 	public static void main(String[] args) {
-		//Définnition du port et de l'adresse de connexion
+		//Définition du port et de l'adresse de connexion
 		int port=2002;
 		String serveur = "127.0.0.1";
 		try {
