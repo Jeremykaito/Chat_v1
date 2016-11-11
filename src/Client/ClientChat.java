@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
-//coucou
+
 
 public class ClientChat {
 
@@ -14,6 +14,8 @@ public class ClientChat {
 	private DataInputStream reception;
 	private Scanner commande;
 	private String choix;
+	private CommandeClient co;
+	private String nom;
 
 	public ClientChat(int port, String serveur) throws UnknownHostException, IOException{
 		// Activation d'une communication avec le serveur
@@ -24,7 +26,6 @@ public class ClientChat {
 
 		int i = reception.read();
 		System.out.println(i);
-
 		//Creation de l'entrée clavier
 		commande = new Scanner(System.in);
 		choix="";
@@ -81,6 +82,7 @@ public class ClientChat {
 		//Vérification de la réponse serveur reçue
 		if(this.reception.readBoolean()){
 			//Accès au chat
+			nom = pseudo;
 			vue_chat();
 		}
 		else System.out.println("Identification incorrecte!");
@@ -107,9 +109,9 @@ public class ClientChat {
 			this.emission.writeUTF("inscription");
 			this.emission.writeUTF(pseudo);
 			this.emission.writeUTF(mdp);
-
+			boolean de =this.reception.readBoolean();
 			//Vérification de la réponse serveur reçue
-			if(this.reception.readBoolean()) {
+			if(de) {
 				System.out.println("Création réussie !");
 			}
 			else System.out.println("Désolé ce nom est déjà pris !");
@@ -118,7 +120,7 @@ public class ClientChat {
 
 	}
 
-	public void vue_chat() throws IOException{
+	public void  vue_chat() throws IOException{
 
 		boolean ouvert = true;
 		//
@@ -168,7 +170,6 @@ public class ClientChat {
 		this.emission.writeUTF("creationTopic");
 		this.emission.writeUTF(titre);
 		this.emission.writeUTF(description);
-
 		if(this.reception.readBoolean()) {
 			System.out.println("Création réussie !");
 		}
@@ -186,8 +187,8 @@ public class ClientChat {
 		//Envoi des données au serveur
 		this.emission.writeUTF("rejoindreTopic");
 		this.emission.writeUTF(titre);
-
-		if(this.reception.readBoolean()) {
+		boolean a=this.reception.readBoolean();
+		if(a) {
 			System.out.println("Entrée dans le topic");
 			vue_topic();
 		}
