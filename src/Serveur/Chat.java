@@ -35,7 +35,7 @@ public class Chat {
 		nomFichierTopics="./topics.obj";
 		nbUsers = 0;
 		nbConnectedUsers=0;
-		
+
 		// Chargement du chat sauvegardé
 		try {
 			chargerChat();
@@ -48,15 +48,15 @@ public class Chat {
 	public int getNbUsers() {
 		return nbUsers;
 	}
-	
+
 	public int getNbConnectedUsers() {
 		return nbConnectedUsers;
 	}
-	
+
 	public void setNbUsers(int nbUsers) {
 		this.nbUsers = nbUsers;
 	}
-	
+
 	public String getTopics() {
 		return liste_topics.toString();
 	}
@@ -88,9 +88,10 @@ public class Chat {
 	 */
 	public boolean connexion(String pseudo, String mdp) {
 		for(Utilisateur u : communaute) {
-			if(pseudo.equals(u.getPseudo()) && mdp.equals(u.getMdp()))
+			if(pseudo.equals(u.getPseudo()) && mdp.equals(u.getMdp())) {
 				nbConnectedUsers++;
 				return true;
+			}
 		}
 		return false;
 	}
@@ -105,7 +106,7 @@ public class Chat {
 		}
 		return s;
 	}
-	
+
 	public boolean creationTopic(String titre, String description) {
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
@@ -114,7 +115,7 @@ public class Chat {
 		}
 		//Création d'un nouveau topic s'il n'existe pas
 		Topic topic = new Topic(titre, description);
-		liste_topics.add(topic); //Ajout de l'utilisateur dans la liste communaute
+		liste_topics.add(topic); //Ajout du topic dans la liste
 		return true;
 	}
 
@@ -126,7 +127,7 @@ public class Chat {
 		}
 		return false;
 	}
-	
+
 	public void chargerChat() throws ChargerChatException,FileNotFoundException {
 
 		//Chargement des utilisateurs
@@ -146,13 +147,13 @@ public class Chat {
 			e.printStackTrace();
 			throw new ChargerChatException("Erreur durant le chargement des utilisateurs.");
 		}
-		
+
 		//Chargement des topics
 		try (InputStream is = new FileInputStream(nomFichierTopics)){
 			ObjectInputStream ios = new ObjectInputStream(is);
 			while (is.available() > 0) {
 				liste_topics.add((Topic) ios.readObject()); //On lit les topics depuis le fichier			}
-			ios.close();
+				ios.close();
 			}
 		}
 		catch(FileNotFoundException e){ //Si le fichier n'est pas trouvé
@@ -167,16 +168,16 @@ public class Chat {
 	}
 
 	public void sauvegarderChat() throws SauvegarderChatException, IOException {
-		
+
 		ObjectOutputStream oos = null;
-		
+
 		//Sauvegarde des utilisateurs
 		try (OutputStream os = new FileOutputStream(nomFichierUtilisateurs);) {
-			
+
 			//Récupération des utilisateurs
 			Utilisateur[] utilisateurs=new Utilisateur[0];
 			utilisateurs=communaute.toArray(utilisateurs);
-			
+
 			//Ecriture dans le fichier
 			oos = new ObjectOutputStream(os);
 			for(Utilisateur util : utilisateurs){
@@ -188,14 +189,14 @@ public class Chat {
 		}finally {
 			oos.close();
 		}
-		
+
 		//Sauvegarde des topics
 		try (OutputStream os = new FileOutputStream(nomFichierTopics);) {
-			
+
 			//Récupération des utilisateurs
 			Topic[] topics =new Topic[0];
 			topics=liste_topics.toArray(topics);
-			
+
 			//Ecriture dans le fichier
 			oos = new ObjectOutputStream(os);
 			for(Topic top : topics){

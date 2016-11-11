@@ -20,14 +20,15 @@ public class ServiceChat implements Runnable{
 		try{
 			DataInputStream reception = new DataInputStream(communication.getInputStream());
 			DataOutputStream emission = new DataOutputStream(communication.getOutputStream());
-			String choix = reception.readUTF();
-			String pseudo;
-			String mdp;
-			String titre;
-			String description;
+			String choix="";
+			String pseudo="";
+			String mdp="";
+			String titre="";
+			String description="";
 			boolean rep;
-			
+
 			while(true){
+				choix = reception.readUTF();
 				switch(choix) {
 
 				case "connexion":
@@ -43,31 +44,31 @@ public class ServiceChat implements Runnable{
 					rep = chat.creationUtilisateur(pseudo,mdp);
 					emission.writeBoolean(rep);
 					break;
-					
+
 				case "rejoindreTopic" :
 					titre = reception.readUTF();
 					rep = chat.rejoindreTopic(titre);
 					emission.writeBoolean(rep);
 					break;
-					
-				case "CreationTopic" :
+
+				case "creationTopic" :
 					titre = reception.readUTF();
 					description = reception.readUTF();
 					rep = chat.creationTopic(titre,description);
 					emission.writeBoolean(rep);
 					break;
-					
+
 				case "topic" :
 
 					System.out.println(reception.readUTF());
 					System.out.println(reception.readUTF());
 
 					break;
-					
+
 				case "listTopics" :
 					emission.writeUTF(chat.getTopics());
 					break;
-					
+
 				case "quitter":
 					break;
 				default :

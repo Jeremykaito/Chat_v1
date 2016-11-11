@@ -115,9 +115,9 @@ public class ClientChat {
 			this.emission.writeUTF("inscription");
 			this.emission.writeUTF(pseudo);
 			this.emission.writeUTF(mdp);
-			boolean de =this.reception.readBoolean();
+	
 			//Vérification de la réponse serveur reçue
-			if(de) {
+			if(this.reception.readBoolean()) {
 				System.out.println("Création réussie !");
 			}
 			else System.out.println("Désolé ce nom est déjà pris !");
@@ -131,6 +131,9 @@ public class ClientChat {
 		boolean ouvert = true;
 		System.out.println("- Bonjour "+ nom+" -");
 		do{
+			//Affichage des topics existants
+			this.emission.writeUTF("listTopics");
+			System.out.println(this.reception.readUTF());
 			//Menu
 			System.out.println("1 - Rejoindre un topic");
 			System.out.println("2 - Créer un topic");
@@ -187,7 +190,6 @@ public class ClientChat {
 		
 		//Données utilisateur
 		String titre;
-		
 		//Affichage des topics existants
 		this.emission.writeUTF("listTopics");
 		System.out.println(this.reception.readUTF());
