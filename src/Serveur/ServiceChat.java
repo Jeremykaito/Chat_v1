@@ -61,8 +61,8 @@ public class ServiceChat implements Runnable{
 				case "topic" :
 
 					System.out.println(reception.readUTF());
-					System.out.println(reception.readUTF());
-
+					
+					emission.writeUTF("cou");
 					break;
 
 				case "listTopics" :

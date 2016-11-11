@@ -218,7 +218,12 @@ public class ClientChat {
 		new TopicThread(topic,communication);
 
 		//Message de bienvenue
-
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("Bienvenue dans le topic " + topic);
 		System.out.println("----------------------------------------------------------");
 		System.out.println("Commandes : ");
@@ -235,7 +240,6 @@ public class ClientChat {
 
 			if(msg.equalsIgnoreCase("/exit")){
 				ouvert=false;
-				vue_chat();
 			}
 			else{
 				this.emission.writeUTF(nom + " : " + msg);

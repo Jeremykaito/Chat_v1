@@ -22,7 +22,7 @@ public class TopicThread implements Runnable {
 
 	}
 
-	public void run() {
+	public synchronized void run() {
 		try {
 			// Creation des flux sortant et entrant
 			emission = new DataOutputStream(communication.getOutputStream());
@@ -30,7 +30,8 @@ public class TopicThread implements Runnable {
 
 			emission.writeUTF("topic");
 			emission.writeUTF(title);
-			System.out.println(reception.readUTF());
+			String e = reception.readUTF();
+			System.out.println();
 		}
 		catch (IOException e) {}
 		/*
