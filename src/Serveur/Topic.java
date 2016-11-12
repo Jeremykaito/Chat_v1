@@ -49,4 +49,8 @@ public class Topic implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String toString(){
+		return titre + " : " + description;
+	}
 }

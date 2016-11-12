@@ -133,7 +133,7 @@ public class ClientChat {
 		do{
 			//Affichage des topics existants
 			this.emission.writeUTF("listTopics");
-			System.out.println(this.reception.readUTF());
+			System.out.println("\nTopics existants : \n" + this.reception.readUTF());
 			//Menu
 			System.out.println("1 - Rejoindre un topic");
 			System.out.println("2 - Créer un topic");
@@ -172,9 +172,10 @@ public class ClientChat {
 
 		//Saisie des données par l'utilisateur
 		System.out.println("Veuillez entrer un titre :");
-		titre = commande.next();
+		commande.nextLine();
+		titre = commande.nextLine();
 		System.out.println("Veuillez entrer une description :");
-		description = commande.next();
+		description = commande.nextLine();
 
 		//Envoi des données au serveur
 		this.emission.writeUTF("creationTopic");
@@ -192,7 +193,7 @@ public class ClientChat {
 		String titre;
 		//Affichage des topics existants
 		this.emission.writeUTF("listTopics");
-		System.out.println(this.reception.readUTF());
+		System.out.println("\nTopics existants : \n" + this.reception.readUTF());
 
 		//Saisie des données par l'utilisateur
 		System.out.println("Veuillez entrer le titre :");

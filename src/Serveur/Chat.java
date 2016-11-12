@@ -57,10 +57,6 @@ public class Chat {
 		this.nbUsers = nbUsers;
 	}
 
-	public String getTopics() {
-		return liste_topics.toString();
-	}
-
 	/**
 	 * @brief Creation d'un utilisateur
 	 * @param pseudo
@@ -98,8 +94,22 @@ public class Chat {
 	/**
 	 * 
 	 */
-	@Override
-	public String toString() {
+
+	public String toStringUsers() {
+		String s ="";
+		if(!liste_topics.isEmpty()){
+			for(Topic t: liste_topics){
+				s=s+t.toString()+"\n";
+			}
+		}
+		else{
+			s = "Aucun topic n'a été créé.";
+		}
+
+		return s;
+	}
+	
+	public String toStringCommunauté() {
 		String s ="";
 		for(Utilisateur u: communaute){
 			s=s+u.toString();
@@ -153,8 +163,9 @@ public class Chat {
 			ObjectInputStream ios = new ObjectInputStream(is);
 			while (is.available() > 0) {
 				liste_topics.add((Topic) ios.readObject()); //On lit les topics depuis le fichier			}
-				ios.close();
 			}
+			ios.close();
+
 		}
 		catch(FileNotFoundException e){ //Si le fichier n'est pas trouvé
 
