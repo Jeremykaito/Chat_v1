@@ -13,8 +13,8 @@ public class Message implements Serializable{
 	 * @param contenu, le texte du message
 	 * @param auteur, l'utilisateur qui poste le message
 	 */
-	public Message(String text, Utilisateur auteur) {
-		this.auteur = auteur;
+	public Message(String text) {
+		//this.auteur = auteur;
 		this.contenu = text;
 		//todo date
 	}

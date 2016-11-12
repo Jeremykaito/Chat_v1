@@ -26,6 +26,9 @@ public class Topic implements Serializable{
 		discussion = new ArrayList();
 		
 	}
+	public String getMessages() {
+		return discussion.toString();
+	}
 	
 	public void addComment(Message comment){
 		discussion.add(comment);

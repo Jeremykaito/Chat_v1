@@ -242,6 +242,8 @@ public class ClientChat {
 				ouvert=false;
 			}
 			else{
+				this.emission.writeUTF("parler");
+				this.emission.writeUTF(topic);
 				this.emission.writeUTF(nom + " : " + msg);
 			}
 		}while (ouvert);

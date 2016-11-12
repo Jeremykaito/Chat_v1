@@ -210,5 +210,25 @@ public class Chat {
 		}
 	}
 
+	public String getTopic(String titre) {
+		String messages ="rien";
+		for(Topic t : liste_topics) {
+			if(titre.equalsIgnoreCase(t.getTitre())){
+				messages=t.getMessages();
+				return messages;
+			}
+		}
+		return messages;
+	}
+
+	public void addMessage(String titre, String message) {
+		
+		for(Topic t : liste_topics) {
+			if(titre.equalsIgnoreCase(t.getTitre())){
+				t.addComment(new Message(message));
+			}
+		}
+	}
+
 
 }

@@ -13,7 +13,7 @@ public class TopicThread implements Runnable {
 	private String title;
 
 	public TopicThread(String title, Socket communication) {
-		
+
 		// Activation d'une communication avec le serveur
 		this.communication = communication;
 		this.title = title;
@@ -27,13 +27,15 @@ public class TopicThread implements Runnable {
 			// Creation des flux sortant et entrant
 			emission = new DataOutputStream(communication.getOutputStream());
 			reception = new DataInputStream(communication.getInputStream());
-
-			emission.writeUTF("topic");
-			emission.writeUTF(title);
-			String e = reception.readUTF();
-			System.out.println();
+			while (true) {
+				Thread.sleep(5000);
+				emission.writeUTF("topic");
+				emission.writeUTF(title);
+				String discussion = reception.readUTF();
+				System.out.println(discussion);
+			}
 		}
-		catch (IOException e) {}
+		catch (IOException | InterruptedException e) {}
 		/*
 		try {
 			while ((commande=in.readLine())!=null) {
@@ -42,7 +44,7 @@ public class TopicThread implements Runnable {
 				}
 
 				else {
-	
+
 				}
 			}
 		}

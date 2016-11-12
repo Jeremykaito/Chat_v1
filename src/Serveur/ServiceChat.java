@@ -25,6 +25,7 @@ public class ServiceChat implements Runnable{
 			String mdp="";
 			String titre="";
 			String description="";
+			String message="";
 			boolean rep;
 
 			while(true){
@@ -59,14 +60,19 @@ public class ServiceChat implements Runnable{
 					break;
 
 				case "topic" :
-
-					System.out.println(reception.readUTF());
+					titre = reception.readUTF();
+					String messages = chat.getTopic(titre);
 					
-					emission.writeUTF("cou");
+					emission.writeUTF(messages);
 					break;
 
 				case "listTopics" :
 					emission.writeUTF(chat.getTopics());
+					break;
+				case "parler" :
+					message = reception.readUTF();
+					titre = reception.readUTF();
+					chat.addMessage(titre,message);
 					break;
 
 				case "quitter":
