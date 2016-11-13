@@ -32,7 +32,7 @@ public class CommandeServeur implements Runnable{
 					System.out.println("Sauvegarde du chat réussie.");
 				}
 				else if (commande.equalsIgnoreCase("/total"))
-					System.out.println(this.chat.getNbUsers()+ " sont inscrits.");
+					System.out.println(this.chat.getNbUsers()+ " personne(s) inscrite(s).");
 				
 				//On ferme le serveur
 				else if (commande.equalsIgnoreCase("/exit"))
