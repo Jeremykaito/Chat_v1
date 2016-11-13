@@ -54,6 +54,9 @@ public class ClientThread implements Runnable{
 				case "3":
 					emission.writeUTF("Au revoir !");
 					emission.writeUTF("/quit");
+					//On ferme la socket et les flux
+					emission.close();
+					reception.close();
 					communication.close();
 					System.exit(0);
 				default :
