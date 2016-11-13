@@ -2,7 +2,6 @@ package Serveur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import Exceptions.ChargerChatException;
 
@@ -12,8 +11,6 @@ public class ServeurChat {
 	private int port;
 	private ServerSocket sock;
 	private Chat chat;
-	private final ArrayList<ServeurThread> services;
-	
 	/**
 	 * @brief Constructeur du serveur
 	 * @param port
@@ -25,7 +22,6 @@ public class ServeurChat {
 		sock = new ServerSocket(port);
 		this.chat = new Chat();
 		new CommandeServeur(chat);
-		services = new ArrayList();
 	}
 	/**
 	 * @brief Accepter les connexions entrantes
@@ -37,10 +33,7 @@ public class ServeurChat {
 			//Ouverture de la connexion
 			Socket communication = sock.accept();
 			//Lancement d'un nouveau Thread
-			ServeurThread service = new ServeurThread(communication,chat, services);
-			Thread t = new Thread(service);
-			services.add(service);
-			t.start();
+			new Thread(new ServiceChat(communication,chat)).start();
 			System.out.println("Un utilisateur accède  au Chat. Ouverture d'une connexion...");
 		}while(true);
 	}

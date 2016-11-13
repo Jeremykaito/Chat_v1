@@ -3,18 +3,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 
 
-public class ServeurThread implements Runnable{
+public class ServiceChat implements Runnable{
 
 	private Socket communication;
 	private Chat chat;
-	private ArrayList<ServeurThread> services;
-	public ServeurThread(Socket com, Chat chat, ArrayList<ServeurThread> services ){
+
+	public ServiceChat(Socket com, Chat chat){
 		this.communication=com;
 		this.chat=chat;
-		this.services = services;
 	}
 
 	@Override
