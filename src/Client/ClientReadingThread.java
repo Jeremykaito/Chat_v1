@@ -10,7 +10,6 @@ import java.util.Scanner;
  * @author Jérémy Ha, Annelyse Nugue
  * @date 13/11/2016
  */
-
 public class ClientReadingThread implements Runnable {
 
 	//Variables de communication
@@ -24,6 +23,10 @@ public class ClientReadingThread implements Runnable {
 	private static int portNumber;
 	private static String host;
 
+	/**
+	 * @brief méthode main du client
+	 * @param String[] : tableau d'arguments
+	 */
 	public static void main(String[] args) throws UnknownHostException {
 
 		//Initialisation
@@ -56,8 +59,11 @@ public class ClientReadingThread implements Runnable {
 				e.printStackTrace();
 		}
 
-}
+	}
 
+	/**
+	 * @brief méthode run du thread qui affiche les messages du serveur
+	 */
 	public void run() {
 
 		String messageServeur;

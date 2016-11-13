@@ -124,7 +124,7 @@ public class ClientThread implements Runnable{
 		while(ouvert){
 			//Affichage informations
 			emission.writeUTF("\nNombre de topics existants : " + chat.getNbTopics());
-			emission.writeUTF("\nNombre de personnes connectées : " + chat.getNbConnectedUsers());
+			emission.writeUTF("\nNombre de personnes connectées : " + threads.size());
 
 			//Menu
 			emission.writeUTF("---------------------");

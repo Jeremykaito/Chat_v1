@@ -13,6 +13,11 @@ import java.util.Date;
 import Exceptions.ChargerChatException;
 import Exceptions.SauvegarderChatException;
 
+/**
+ * Chat : outil de discussion entre plusieurs utilisateurs
+ * @author Jérémy Ha, Annelyse Nugue
+ * @date 13/11/2016
+ */
 public class Chat {
 
 	//Variables
@@ -20,7 +25,7 @@ public class Chat {
 	private ArrayList<Topic> liste_topics; // Liste des sujets du chat
 	private String nomFichierUtilisateurs; //nom du fichier de sauvegarde des utilisateurs
 	private String nomFichierTopics; //nom du fichier de sauvegarde des topics
-	private int nbUsers;
+	private int nbUsers; // le nombre de 
 	private int nbConnectedUsers;
 
 	/**
@@ -34,8 +39,6 @@ public class Chat {
 		communaute = new ArrayList();
 		nomFichierUtilisateurs="./users.obj";
 		nomFichierTopics="./topics.obj";
-		nbUsers = 0;
-		nbConnectedUsers=0;
 
 		// Chargement du chat sauvegardé
 		try {
@@ -50,16 +53,9 @@ public class Chat {
 	}
 	
 	public int getNbUsers() {
-		return nbUsers;
+		return communaute.size();
 	}
 
-	public int getNbConnectedUsers() {
-		return nbConnectedUsers;
-	}
-
-	public void setNbUsers(int nbUsers) {
-		this.nbUsers = nbUsers;
-	}
 
 	/**
 	 * @brief Creation d'un utilisateur
