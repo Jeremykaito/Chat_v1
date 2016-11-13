@@ -244,10 +244,12 @@ public class Chat {
 	}
 	
 	public String getTopicMessages(String titre) {
-		String messages ="";
+		String messages ="aucun message antérieur";
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
-				messages=t.getMessages();
+				for(Message m : t.getMessages()){
+					messages+=m.toString();
+				}
 				return messages;
 			}
 		}
