@@ -104,26 +104,28 @@ public class ClientThread implements Runnable{
 
 			//Vérification de la réponse serveur reçue
 			if(chat.creationUtilisateur(pseudo,mdp)) {
-				System.out.println("Création réussie !");
+				emission.writeUTF("Création réussie !");
 			}
-			else System.out.println("Désolé ce nom est déjà pris !");
+			else emission.writeUTF("Désolé ce nom est déjà pris !");
 		}
-		else System.out.println("Erreur mot de passe non validé");	
+		else emission.writeUTF("Erreur mot de passe non validé");	
 	}
 
 
 	public void  vue_chat() throws IOException{
 
 		boolean ouvert = true;
-		System.out.println("- Bonjour "+ nom+" -");
-		do{
+		emission.writeUTF("- Bonjour "+ nom+" -");
+		while(ouvert){
 			//Affichage des topics existants
 			emission.writeUTF("\nTopics existants : \n" + chat.toStringTopics());
 
 			//Menu
+			emission.writeUTF("---------------------");
 			emission.writeUTF("1 - Rejoindre un topic");
 			emission.writeUTF("2 - Créer un topic");
 			emission.writeUTF("3 - Déconnexion");
+			emission.writeUTF("---------------------");
 			emission.writeUTF("Que voulez-vous faire ? (1 - 3)");
 
 			//Interprétation de la commande
@@ -144,10 +146,11 @@ public class ClientThread implements Runnable{
 				break;
 
 			default :
+				emission.writeUTF("Commande incorrecte...");
 				break;
 			}
 
-		}while(ouvert);
+		}
 	}
 
 	private void vue_rejoindreTopic() throws IOException {
@@ -156,14 +159,13 @@ public class ClientThread implements Runnable{
 		String titre;
 
 		//Affichage des topics existants
-		emission.writeUTF("\nTopics existants : \n" + chat.toStringTopics());
-
+		emission.writeUTF("\nNombre de topics existants : " + chat.getNbTopics());
+		emission.writeUTF("\nNombre de personnes : " + chat.getNbUsers());
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer le titre :");
 		titre = reception.readUTF();
 
 		if(chat.rejoindreTopic(titre)) {
-			emission.writeUTF("Entrée dans le topic...");
 			topic = titre;
 			vue_topic(topic);
 		}
@@ -201,19 +203,22 @@ public class ClientThread implements Runnable{
 		emission.writeUTF("----------------------------------------------------------");
 
 		do{
-
-			//Affichage du pseudo
-			emission.writeUTF(nom + " : ");
-
 			//On récupère le texte tapé par l'utilisateur
 			String msg = reception.readUTF();
 
 			if(msg.equalsIgnoreCase("/exit")){
 				ouvert=false;
+				topic = "";
 			}
 			else{ 
 				chat.addMessage(topic,msg);
-				this.emission.writeUTF(nom + " : " + msg);
+				synchronized (this) {
+					for (ClientThread clientThread : threads) {
+						if (clientThread.topic.equals(this.topic)) {
+							clientThread.emission.writeUTF(nom + " : " + msg);
+						}
+					}
+				}
 			}
 		}while (ouvert);
 	}

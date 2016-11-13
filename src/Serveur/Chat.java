@@ -44,7 +44,10 @@ public class Chat {
 			System.out.println("Erreur lors du chargement des données. Un nouveau chat a été créé.");
 		}
 	}
-
+	public int getNbTopics(){
+		return liste_topics.size();
+	}
+	
 	public int getNbUsers() {
 		return nbUsers;
 	}
