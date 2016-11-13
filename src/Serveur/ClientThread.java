@@ -79,10 +79,10 @@ public class ClientThread implements Runnable{
 		
 		for (ClientThread clientThread : threads) {
 			if (clientThread.nom.equals(pseudo))
-				connected=false;
+				connected=true;
 		}
 		//Vérification de la réponse serveur reçue
-		if(chat.connexion(pseudo,mdp)){
+		if(chat.connexion(pseudo,mdp) && connected==false){
 			nom = pseudo;
 			//Accès au chat
 			vue_chat();
