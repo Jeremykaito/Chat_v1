@@ -202,7 +202,10 @@ public class ClientThread implements Runnable{
 		emission.writeUTF("/exit pour quitter ce topic");
 		emission.writeUTF("----------------------------------------------------------");
 
+		emission.writeUTF(chat.getTopicMessages(topic));
+
 		do{
+
 			//On récupère le texte tapé par l'utilisateur
 			String msg = reception.readUTF();
 
@@ -211,7 +214,7 @@ public class ClientThread implements Runnable{
 				topic = "";
 			}
 			else{ 
-				chat.addMessage(topic,msg);
+				chat.addMessage(topic,msg,nom);
 				synchronized (this) {
 					for (ClientThread clientThread : threads) {
 						if (clientThread.topic.equals(this.topic)) {
