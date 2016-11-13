@@ -53,7 +53,7 @@ public class MainClient implements Runnable {
 			//On ferme la socket et les flux
 			emission.close();
 			reception.close();
-			commande.close();
+			communication.close();
 		}
 		catch (IOException e) {
 				e.printStackTrace();
