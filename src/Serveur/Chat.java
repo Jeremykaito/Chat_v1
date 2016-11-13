@@ -32,8 +32,8 @@ public class Chat {
 	public Chat() throws FileNotFoundException{
 
 		//Initialisation
-		liste_topics = new ArrayList();
-		communaute = new ArrayList();
+		liste_topics = new ArrayList<Topic>();
+		communaute = new ArrayList<Utilisateur>();
 		nomFichierUtilisateurs="./users.obj";
 		nomFichierTopics="./topics.obj";
 
@@ -220,7 +220,9 @@ public class Chat {
 		}
 	}
 
-	//Getters et setters
+	/**
+	 * @brief Getters et setters 
+	 */
 	
 	public int getNbTopics(){
 		return liste_topics.size();
