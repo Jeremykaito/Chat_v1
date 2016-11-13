@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import Client.ClientReadingThread;
-import Client.ClientThread;
 import Exceptions.ChargerChatException;
 
 
