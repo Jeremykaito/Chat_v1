@@ -38,10 +38,6 @@ public class Message implements Serializable{
 		return msg;
 	}
 
-	public String getAuteur() {
-		return auteur;
-	}
-
 	public String getDate() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		return dateFormat.format(date);
