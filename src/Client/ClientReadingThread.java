@@ -18,6 +18,7 @@ public class ClientReadingThread implements Runnable{
  private boolean closed = false;
 
  public ClientReadingThread(int port, String serveur) throws UnknownHostException, IOException{
+  
   // Activation d'une communication avec le serveur
   communication = new Socket(serveur, port);
   // Creation des flux sortant et entrant
