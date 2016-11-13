@@ -21,8 +21,8 @@ public class Topic implements Serializable{
 	 * @param String description : court énoncé du sujet 
 	 */
 	public Topic(String titre, String description) {
-		this.setTitre(titre);
-		this.setDescription(description);
+		this.titre=titre;
+		this.description=description;
 		discussion = new ArrayList<Message>();
 		
 	}
@@ -44,18 +44,6 @@ public class Topic implements Serializable{
 
 	public String getTitre() {
 		return titre;
-	}
-
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	
 	public String toString(){
