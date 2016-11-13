@@ -13,7 +13,7 @@ public class ClientThread implements Runnable{
 	private final ArrayList<ClientThread> threads;
 	private DataInputStream reception;
 	private DataOutputStream emission;
-	private String nom;
+	private String nom="";
 	private String topic;
 	private String choix;
 
