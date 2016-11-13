@@ -17,35 +17,40 @@ public class ServeurChat {
 	private int port;
 	private static ServerSocket sock;
 	private Chat chat;
-	private static final ArrayList<ClientThread> threads = new ArrayList<ClientThread>();
+	private static final ArrayList<ClientThread> threads = new ArrayList<ClientThread>(); //la liste des threads clients
 	
 	/**
-	 * @brief Constructeur du serveur
+	 * @brief Constructeur
 	 * @param port
-	 * @throws IOException
-	 * @throws ChargerChatException 
 	 */
 	public ServeurChat(int port) throws IOException, ChargerChatException{
 		this.port=port;
 		sock = new ServerSocket(port);
+		
+		//On lance le chat
 		this.chat = new Chat();
+		
+		//On lance un nouveau thread qui va gérer les commandes serveur
 		(new Thread(new CommandeServeur(chat))).start();
 	}
+	
 	/**
-	 * @brief Accepter les connexions entrantes
+	 * @brief Accepte les connexions entrantes
 	 * @throws IOException
 	 */
 	public void accepterConnexion() throws IOException {
 		
 		do {
+			
 			//Ouverture de la connexion
 			Socket communication = sock.accept();
-			//Lancement d'un nouveau Thread
+			
+			//Lancement d'un nouveau thread client
 		   ClientThread serveurThread = new ClientThread(communication, chat, threads);
 		   Thread t = new Thread(serveurThread);
-		   threads.add(serveurThread);
+		   threads.add(serveurThread); //On l'ajoute au tableau des threads
 		   t.start();
-			System.out.println("Un utilisateur accède  au Chat. Ouverture d'une connexion...");
+		   System.out.println("Un utilisateur accède  au Chat. Ouverture d'une connexion...");
 		}while(true);
 	}
 }
