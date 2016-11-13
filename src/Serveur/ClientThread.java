@@ -66,17 +66,21 @@ public class ClientThread implements Runnable{
 		}
 	}
 
-	public void vue_connexion() throws IOException {
+	public synchronized void vue_connexion() throws IOException {
 		//Données utilisateur
 		String pseudo;
 		String mdp;
-
+		boolean connected=false;
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer votre pseudo :");
 		pseudo = reception.readUTF();
 		emission.writeUTF("Veuillez entrer votre mot de passe :");
 		mdp = reception.readUTF();
-
+		
+		for (ClientThread clientThread : threads) {
+			if (clientThread.nom.equals(pseudo))
+				connected=false;
+		}
 		//Vérification de la réponse serveur reçue
 		if(chat.connexion(pseudo,mdp)){
 			nom = pseudo;
@@ -86,7 +90,7 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Identification incorrecte!");
 	}
 
-	private void vue_inscription() throws IOException {
+	private synchronized void vue_inscription() throws IOException {
 
 		//Données utilisateur
 		String pseudo;
@@ -118,8 +122,9 @@ public class ClientThread implements Runnable{
 		boolean ouvert = true;
 		emission.writeUTF("- Bonjour "+ nom+" -");
 		while(ouvert){
-			//Affichage des topics existants
-			emission.writeUTF("\nTopics existants : \n" + chat.toStringTopics());
+			//Affichage informations
+			emission.writeUTF("\nNombre de topics existants : " + chat.getNbTopics());
+			emission.writeUTF("\nNombre de personnes connectées : " + chat.getNbConnectedUsers());
 
 			//Menu
 			emission.writeUTF("---------------------");
@@ -154,14 +159,14 @@ public class ClientThread implements Runnable{
 		}
 	}
 
-	private void vue_rejoindreTopic() throws IOException {
+	private synchronized void vue_rejoindreTopic() throws IOException {
 
 		//Données utilisateur
 		String titre;
 
-		//Affichage des topics existants
-		emission.writeUTF("\nNombre de topics existants : " + chat.getNbTopics());
-		emission.writeUTF("\nNombre de personnes : " + chat.getNbUsers());
+		emission.writeUTF("\nTopics existants : \n" + chat.toStringTopics());
+
+
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer le titre :");
 		titre = reception.readUTF();
@@ -173,7 +178,7 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Désolé aucun topic correspondant.");
 	}
 
-	private void vue_creationTopic() throws IOException {
+	private synchronized void vue_creationTopic() throws IOException {
 
 		//Données utilisateur
 		String titre;
@@ -192,7 +197,7 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Désolé ce titre est déjà pris !");
 	}
 
-	private void vue_topic(String topic) throws IOException{
+	private synchronized void vue_topic(String topic) throws IOException{
 
 		boolean ouvert =true;
 
@@ -203,7 +208,10 @@ public class ClientThread implements Runnable{
 		emission.writeUTF("/exit pour quitter ce topic");
 		emission.writeUTF("----------------------------------------------------------");
 
+		emission.writeUTF(chat.getTopicMessages(topic));
+
 		do{
+
 			//On récupère le texte tapé par l'utilisateur
 			String msg = reception.readUTF();
 
@@ -212,13 +220,12 @@ public class ClientThread implements Runnable{
 				topic = "";
 			}
 			else{ 
-				chat.addMessage(topic,msg);
-				synchronized (this) {
-					for (ClientThread clientThread : threads) {
-						if (clientThread.topic.equals(this.topic)) {
-							clientThread.emission.writeUTF(nom + " : " + msg);
-						}
+				chat.addMessage(topic,msg,nom);
+				for (ClientThread clientThread : threads) {
+					if (clientThread.topic.equals(this.topic) && !clientThread.nom.equals(this.nom)) {
+						clientThread.emission.writeUTF(nom + " : " + msg);
 					}
+
 				}
 			}
 		}while (ouvert);

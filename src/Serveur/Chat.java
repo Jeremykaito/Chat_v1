@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Exceptions.ChargerChatException;
 import Exceptions.SauvegarderChatException;
@@ -224,8 +225,8 @@ public class Chat {
 		}
 	}
 
-	public String getTopic(String titre) {
-		String messages ="rien";
+	public String getTopicMessages(String titre) {
+		String messages ="";
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
 				messages=t.getMessages();
@@ -235,11 +236,11 @@ public class Chat {
 		return messages;
 	}
 
-	public void addMessage(String titre, String message) {
+	public void addMessage(String titre, String message, String auteur) {
 		
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
-				t.addComment(new Message(message));
+				t.addComment(new Message(message,auteur,new Date()));
 			}
 		}
 	}

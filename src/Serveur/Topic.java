@@ -1,7 +1,6 @@
 package Serveur;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Topic implements Serializable{
 	
