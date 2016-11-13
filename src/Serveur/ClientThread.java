@@ -14,7 +14,7 @@ public class ClientThread implements Runnable{
 	private DataInputStream reception;
 	private DataOutputStream emission;
 	private String nom="";
-	private String topic;
+	private String topic="";
 	private String choix;
 
 
@@ -165,7 +165,15 @@ public class ClientThread implements Runnable{
 		String titre;
 
 		emission.writeUTF("\nTopics existants : \n");
-
+		for(Topic topic : chat.getTopics()) {
+			int nb_connecte=0;
+			for(ClientThread t : threads){
+				if(t.topic.equals(topic.getTitre()))
+					nb_connecte++;
+			}
+			emission.writeUTF(topic.toString()+" - (Personnes connectées : "+nb_connecte+")");
+			}
+		
 
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer le titre :");
