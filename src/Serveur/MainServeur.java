@@ -10,6 +10,10 @@ import Exceptions.ChargerChatException;
  */
 public class MainServeur {
 
+	/**
+	 * @brief méthode main du serveur
+	 * @param String[] : tableau d'arguments
+	 */
 	public static void main(String[] args) {
 		
 		int port = 2002;

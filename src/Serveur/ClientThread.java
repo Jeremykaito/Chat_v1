@@ -5,36 +5,52 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-
+/**
+ * ClientThread : thread client traitant la communication serveur/client
+ * @author Jérémy Ha, Annelyse Nugue
+ * @date 13/11/2016
+ */
 public class ClientThread implements Runnable{
 
+	//Variables de communication
 	private Socket communication;
-	private Chat chat;
-	private final ArrayList<ClientThread> threads;
 	private DataInputStream reception;
 	private DataOutputStream emission;
-	private String nom="";
-	private String topic="";
+	
+	//Variables diverses
+	private final ArrayList<ClientThread> threads; //La liste des threads clients
+	private Chat chat;
+	private String nom;
+	private String topic;
 	private String choix;
 
-
+	/**
+	 * @brief Constructeur
+	 * @param Socket com : la socket
+	 * @param Chat chat : le chat dans lequel les utilisateurs discutent
+	 * @param ArrayList<ClientThread> threads : la liste de threads clients
+	 */
 	public ClientThread(Socket com, Chat chat, ArrayList<ClientThread> threads){
 		this.communication=com;
 		this.chat=chat;
 		this.threads=threads;
 	}
 
+	/**
+	 * @brief Traite les différentes commandes
+	 */
 	@Override
 	public synchronized void run() {
 
 		ArrayList<ClientThread> threads = this.threads;
 
 		try{
+			//Création des flux
 			reception = new DataInputStream(communication.getInputStream());
 			emission = new DataOutputStream(communication.getOutputStream());
 
 			do{
-				//Menu
+				//Affichage du  menu
 				emission.writeUTF("---------------------");
 				emission.writeUTF("Bienvenue");
 				emission.writeUTF("1 - Se connecter");
@@ -43,22 +59,32 @@ public class ClientThread implements Runnable{
 				emission.writeUTF("---------------------");
 				emission.writeUTF("Que voulez-vous faire (1 à 3) ?");
 
+				//Lecture du choix de l'utilisateur
 				choix = reception.readUTF();
+				
 				switch(choix) {
+				
+				//Se connecter
 				case "1":
 					vue_connexion();
 					break;
+				
+				//S'incrire
 				case "2":
 					vue_inscription();
 					break;
+					
+				//Quitter l'application
 				case "3":
 					emission.writeUTF("Au revoir !");
 					emission.writeUTF("/quit");
+					
 					//On ferme la socket et les flux
 					emission.close();
 					reception.close();
 					communication.close();
 					System.exit(0);
+					
 				default :
 					emission.writeUTF("Commande incorrecte...");
 					break;
@@ -69,22 +95,29 @@ public class ClientThread implements Runnable{
 		}
 	}
 
+	/**
+	 * @brief Affichage du menu de connexion
+	 */
 	public synchronized void vue_connexion() throws IOException {
+		
 		//Données utilisateur
 		String pseudo;
 		String mdp;
 		boolean connected=false;
+		
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer votre pseudo :");
 		pseudo = reception.readUTF();
 		emission.writeUTF("Veuillez entrer votre mot de passe :");
 		mdp = reception.readUTF();
 		
+		//Pour empêcher la connexion si l'utilisateur est déjà connecté
 		for (ClientThread clientThread : threads) {
 			if (clientThread.nom.equals(pseudo))
 				connected=true;
 		}
-		//Vérification de la réponse serveur reçue
+		
+		//Si les données correspondent, l'utilisateur est connecté
 		if(chat.connexion(pseudo,mdp) && connected==false){
 			nom = pseudo;
 			//Accès au chat
@@ -93,6 +126,9 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Identification incorrecte!");
 	}
 
+	/**
+	 * @brief Affichage du menu d'inscription
+	 */
 	private synchronized void vue_inscription() throws IOException {
 
 		//Données utilisateur
@@ -120,10 +156,14 @@ public class ClientThread implements Runnable{
 	}
 
 
+	/**
+	 * @brief Affichage du menu du chat
+	 */
 	public void  vue_chat() throws IOException{
 
 		boolean ouvert = true;
 		emission.writeUTF("- Bonjour "+ nom+" -");
+		
 		while(ouvert){
 			//Affichage informations
 			emission.writeUTF("\nNombre de topics existants : " + chat.getNbTopics());
@@ -162,11 +202,15 @@ public class ClientThread implements Runnable{
 		}
 	}
 
+	/**
+	 * @brief Affichage du menu pour rejoindre un topic
+	 */
 	private synchronized void vue_rejoindreTopic() throws IOException {
 
 		//Données utilisateur
 		String titre;
 
+		//Affichage des topics existants 
 		emission.writeUTF("\nTopics existants : \n");
 		for(Topic topic : chat.getTopics()) {
 			int nb_connecte=0;
@@ -177,11 +221,11 @@ public class ClientThread implements Runnable{
 			emission.writeUTF(topic.toString()+" - (Personnes connectées : "+nb_connecte+")");
 			}
 		
-
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer le titre :");
 		titre = reception.readUTF();
 
+		//Si le topic existe, l'utilisateur le rejoint
 		if(chat.existTopic(titre)) {
 			topic = titre;
 			vue_topic(topic);
@@ -189,6 +233,9 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Désolé aucun topic correspondant.");
 	}
 
+	/**
+	 * @brief Affichage du menu de création d'un topic
+	 */
 	private synchronized void vue_creationTopic() throws IOException {
 
 		//Données utilisateur
@@ -208,6 +255,9 @@ public class ClientThread implements Runnable{
 		else emission.writeUTF("Désolé ce titre est déjà pris !");
 	}
 
+	/**
+	 * @brief Affichage de l'interface permettant de communiquer dans le topic
+	 */
 	private synchronized void vue_topic(String topic) throws IOException{
 
 		boolean ouvert =true;
@@ -226,10 +276,13 @@ public class ClientThread implements Runnable{
 			//On récupère le texte tapé par l'utilisateur
 			String msg = reception.readUTF();
 
+			//Si le message est /exit, on quitte le topic
 			if(msg.equalsIgnoreCase("/exit")){
 				ouvert=false;
 				topic = "";
 			}
+			
+			//Sinon, on envoie le message aux utilisateurs du même topic
 			else{ 
 				chat.addMessage(topic,msg,nom);
 				for (ClientThread clientThread : threads) {

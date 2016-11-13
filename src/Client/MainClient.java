@@ -31,7 +31,7 @@ public class MainClient implements Runnable {
 
 		//Initialisation
 		portNumber = 2002;
-		host = "localhost";
+		host = "25.106.191.226";
 		commande = new Scanner(System.in);
 		ouvert= true;
 
@@ -64,6 +64,7 @@ public class MainClient implements Runnable {
 	/**
 	 * @brief méthode run du thread qui affiche les messages du serveur
 	 */
+	@Override
 	public void run() {
 
 		String messageServeur;
@@ -73,7 +74,7 @@ public class MainClient implements Runnable {
 			while ((messageServeur = reception.readUTF()) != null) {
 				
 				if(messageServeur.equalsIgnoreCase("/quit")){
-					break;
+					System.exit(0);
 				}
 				
 				else System.out.println(messageServeur);

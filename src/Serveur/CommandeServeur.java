@@ -1,24 +1,34 @@
 package Serveur;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
-
 import Exceptions.SauvegarderChatException;
 
+/**
+ * CommandeServeur : thread permettant d'écrire certaines commandes dans le serveur
+ * @author Jérémy Ha, Annelyse Nugue
+ * @date 13/11/2016
+ */
 public class CommandeServeur implements Runnable{
 
-	//Déclaration des variables
+	//Variables
 	Chat chat;
 	Scanner sc;
 	String commande="";
 	
+	/**
+	 * @brief Constructeur d'un nouveau topic
+	 * @param Chat : le chat du serveur
+	 */
 	public CommandeServeur(Chat chat){
 		this.chat = chat;
 		sc = new Scanner(System.in);
 		aide();
 	}
 	
+	/**
+	 * @brief Traite les commandes serveur
+	 */
 	@Override
 	public void run() {
 		
@@ -31,6 +41,8 @@ public class CommandeServeur implements Runnable{
 					this.chat.sauvegarderChat();
 					System.out.println("Sauvegarde du chat réussie.");
 				}
+				
+				//Nombre d'utilisateurs inscrits
 				else if (commande.equalsIgnoreCase("/total"))
 					System.out.println(this.chat.getNbUsers()+ " personne(s) inscrite(s).");
 				
@@ -50,6 +62,9 @@ public class CommandeServeur implements Runnable{
 		catch (IOException | SauvegarderChatException e) {}
 	}
 	
+	/**
+	 * @brief Affiche l'aide
+	 */
 	public void aide(){
 		System.out.println("---------------------------------------------");
 		System.out.println("Voici les commandes que vous pouvez taper : ");

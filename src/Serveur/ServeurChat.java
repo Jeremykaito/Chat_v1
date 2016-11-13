@@ -14,7 +14,6 @@ import Exceptions.ChargerChatException;
 public class ServeurChat {
 
 	//Variables
-	private int port;
 	private static ServerSocket sock;
 	private Chat chat;
 	private static final ArrayList<ClientThread> threads = new ArrayList<ClientThread>(); //la liste des threads clients
@@ -24,7 +23,6 @@ public class ServeurChat {
 	 * @param port
 	 */
 	public ServeurChat(int port) throws IOException, ChargerChatException{
-		this.port=port;
 		sock = new ServerSocket(port);
 		
 		//On lance le chat
