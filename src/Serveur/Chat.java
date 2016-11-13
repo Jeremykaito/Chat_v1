@@ -244,7 +244,7 @@ public class Chat {
 	}
 	
 	public String getTopicMessages(String titre) {
-		String messages ="aucun message antérieur";
+		String messages ="";
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
 				for(Message m : t.getMessages()){
@@ -253,6 +253,6 @@ public class Chat {
 				return messages;
 			}
 		}
-		return messages;
+		return "aucun message antérieur";
 	}
 }
