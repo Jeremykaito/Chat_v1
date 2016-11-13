@@ -88,7 +88,6 @@ public class ClientThread implements Runnable{
 					
 					//On sauvegarde le chat
 					chat.sauvegarderChat();
-					System.exit(0);
 					
 				default :
 					emission.writeUTF("Commande incorrecte...");
