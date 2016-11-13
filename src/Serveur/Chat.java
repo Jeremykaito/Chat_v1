@@ -25,12 +25,9 @@ public class Chat {
 	private ArrayList<Topic> liste_topics; // Liste des sujets du chat
 	private String nomFichierUtilisateurs; //nom du fichier de sauvegarde des utilisateurs
 	private String nomFichierTopics; //nom du fichier de sauvegarde des topics
-	private int nbUsers; // le nombre de 
-	private int nbConnectedUsers;
 
 	/**
-	 * @brief Constructeur via les données chargées 
-	 * @param data
+	 * @brief Constructeur 
 	 */
 	public Chat() throws FileNotFoundException{
 
@@ -40,7 +37,7 @@ public class Chat {
 		nomFichierUtilisateurs="./users.obj";
 		nomFichierTopics="./topics.obj";
 
-		// Chargement du chat sauvegardé
+		// Chargement des topics, messages et utilisateurs sauvegardés
 		try {
 			chargerChat();
 			System.out.println("Chargement du chat réussi.");
@@ -48,28 +45,23 @@ public class Chat {
 			System.out.println("Erreur lors du chargement des données. Un nouveau chat a été créé.");
 		}
 	}
-	public int getNbTopics(){
-		return liste_topics.size();
-	}
-	
-	public int getNbUsers() {
-		return communaute.size();
-	}
 
 
 	/**
-	 * @brief Creation d'un utilisateur
-	 * @param pseudo
-	 * @param mdp
-	 * @return boolean, le resultat de la création
+	 * @brief Création d'un utilisateur
+	 * @param String pseudo : le login de l'utilisateur
+	 * @param String mdp : le mot de passe de l'utilisateur
+	 * @return boolean : true si l'inscription a réussi
 	 */
 	public boolean creationUtilisateur(String pseudo, String mdp){
+		
 		//Vérifie si l'utilisateur existe déjà
 		for(Utilisateur u : communaute) {
 			if(pseudo.equals(u.getPseudo())){
 				return false;
 			}
 		}
+		
 		//Création d'un nouvel utilisateur s'il n'existe pas
 		Utilisateur arrivant = new Utilisateur(pseudo, mdp);
 		communaute.add(arrivant); //Ajout de l'utilisateur dans la liste communaute
@@ -78,51 +70,49 @@ public class Chat {
 
 	/**
 	 * @brief Connexion d'un utilisateur
-	 * @param pseudo
-	 * @param mdp
-	 * @return boolean, le resultat de la tentative connexion
+	 * @param String pseudo : le login de l'utilisateur
+	 * @param String mdp : le mot de passe de l'utilisateur
+	 * @return boolean : true si la connexion a réussi
 	 */
 	public boolean connexion(String pseudo, String mdp) {
 		for(Utilisateur u : communaute) {
 			if(pseudo.equals(u.getPseudo()) && mdp.equals(u.getMdp())) {
-				nbConnectedUsers++;
 				return true;
 			}
 		}
 		return false;
 	}
+	
 	/**
-	 * 
+	 * @brief Ajout d'un message dans le topic correpondant
+	 * @param String titre : le titre du topic
+	 * @param String message : le message envoyé
+	 * @param String auteur : l'auteur du message
 	 */
-
-	public String toStringTopics() {
-		String s ="";
-		if(!liste_topics.isEmpty()){
-			for(Topic t: liste_topics){
-				s=s+t.toString()+"\n";
+	public void addMessage(String titre, String message, String auteur) {
+		
+		for(Topic t : liste_topics) {
+			if(titre.equalsIgnoreCase(t.getTitre())){
+				t.addComment(new Message(message,auteur,new Date()));
 			}
 		}
-		else{
-			s = "Aucun topic n'a été créé.";
-		}
-
-		return s;
 	}
 	
-	public String toStringCommunauté() {
-		String s ="";
-		for(Utilisateur u: communaute){
-			s=s+u.toString();
-		}
-		return s;
-	}
-
+	/**
+	 * @brief Création d'un nouveau topic
+	 * @param String titre : le titre du topic
+	 * @param String description : la description du topic
+	 * * @return boolean : true si la création a réussi
+	 */
 	public boolean creationTopic(String titre, String description) {
+		
+		//On vérifie si le topic existe déjà
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
 				return false;
 			}
 		}
+		
 		//Création d'un nouveau topic s'il n'existe pas
 		Topic topic = new Topic(titre, description);
 		liste_topics.add(topic); //Ajout du topic dans la liste
@@ -221,6 +211,29 @@ public class Chat {
 		}
 	}
 
+	//Getters et setters
+	
+	public int getNbTopics(){
+		return liste_topics.size();
+	}
+	
+	public int getNbUsers() {
+		return communaute.size();
+	}
+	
+	public String toStringCommunauté() {
+		String s ="";
+		for(Utilisateur u: communaute){
+			s=s+u.toString();
+		}
+		return s;
+	}
+	
+	public ArrayList<Topic> getTopics() {
+
+		return liste_topics;
+	}
+	
 	public String getTopicMessages(String titre) {
 		String messages ="";
 		for(Topic t : liste_topics) {
@@ -231,15 +244,4 @@ public class Chat {
 		}
 		return messages;
 	}
-
-	public void addMessage(String titre, String message, String auteur) {
-		
-		for(Topic t : liste_topics) {
-			if(titre.equalsIgnoreCase(t.getTitre())){
-				t.addComment(new Message(message,auteur,new Date()));
-			}
-		}
-	}
-
-
 }
