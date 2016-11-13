@@ -102,16 +102,12 @@ public class Chat {
 	 * @brief Création d'un nouveau topic
 	 * @param String titre : le titre du topic
 	 * @param String description : la description du topic
-	 * * @return boolean : true si la création a réussi
+	 * @return boolean : true si la création a réussi
 	 */
 	public boolean creationTopic(String titre, String description) {
 		
 		//On vérifie si le topic existe déjà
-		for(Topic t : liste_topics) {
-			if(titre.equalsIgnoreCase(t.getTitre())){
-				return false;
-			}
-		}
+		if (existTopic(titre)) return false;
 		
 		//Création d'un nouveau topic s'il n'existe pas
 		Topic topic = new Topic(titre, description);
@@ -119,7 +115,13 @@ public class Chat {
 		return true;
 	}
 
-	public boolean rejoindreTopic(String titre) {
+	
+	/**
+	 * @brief Vérifie si un topic existe déjà
+	 * @param String titre : le titre du topic à chercher
+	 * @return boolean : true si le topic existe déjà
+	 */
+	public boolean existTopic(String titre) {
 		for(Topic t : liste_topics) {
 			if(titre.equalsIgnoreCase(t.getTitre())){
 				return true;
@@ -128,6 +130,9 @@ public class Chat {
 		return false;
 	}
 
+	/**
+	 * @brief Charge les topics, messages et utilisateurs sauvegardés
+	 */
 	public void chargerChat() throws ChargerChatException,FileNotFoundException {
 
 		//Chargement des utilisateurs
@@ -168,6 +173,10 @@ public class Chat {
 		}
 	}
 
+	
+	/**
+	 * @brief Sauvegarde dans un fichier les topics, messages et utilisateurs du chat en cours
+	 */
 	public void sauvegarderChat() throws SauvegarderChatException, IOException {
 
 		ObjectOutputStream oos = null;

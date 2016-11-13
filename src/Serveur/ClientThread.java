@@ -164,14 +164,14 @@ public class ClientThread implements Runnable{
 		//Données utilisateur
 		String titre;
 
-		emission.writeUTF("\nTopics existants : \n" + chat.toStringTopics());
+		emission.writeUTF("\nTopics existants : \n");
 
 
 		//Saisie des données par l'utilisateur
 		emission.writeUTF("Veuillez entrer le titre :");
 		titre = reception.readUTF();
 
-		if(chat.rejoindreTopic(titre)) {
+		if(chat.existTopic(titre)) {
 			topic = titre;
 			vue_topic(topic);
 		}
