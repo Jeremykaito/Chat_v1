@@ -1,48 +1,50 @@
 package Serveur;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import Exceptions.SauvegarderChatException;
 
 public class CommandeServeur implements Runnable{
 
+	//Déclaration des variables
 	Chat chat;
-	BufferedReader in; // pour gestion du flux d'entrée (celui de la console)
-	String commande=""; // contiendra la commande tapée
-	Thread t; // contiendra le thread
+	Scanner sc;
+	String commande="";
 	
 	public CommandeServeur(Chat chat){
 		this.chat = chat;
-		// le flux d'entrée de la console sera géré plus pratiquement dans un BufferedReader
-		in = new BufferedReader(new InputStreamReader(System.in));
-		t = new Thread(this); // instanciation du thread
-		t.start(); // demarrage du thread, la fonction run() est ici lancée
+		sc = new Scanner(System.in);
 		aide();
 	}
+	
 	@Override
 	public void run() {
 		
 		try
 		{
-			while ((commande=in.readLine())!=null)
+			while ((commande=sc.next())!=null)
 			{
-				if (commande.equalsIgnoreCase("save")){ // commande "save" detectée ...
-					this.chat.sauvegarderChat(); // ... on sauvegarde le chat
+				//Sauvegarde du chat
+				if (commande.equalsIgnoreCase("/save")){
+					this.chat.sauvegarderChat();
 					System.out.println("Sauvegarde du chat réussie.");
 				}
-				else if (commande.equalsIgnoreCase("total")) // commande "total" detectée ...
-					System.out.println(this.chat.getNbConnectedUsers()+ " sont connectés actuellement."); // ... on affiche le nombre d'utilisateurs connectés
-				else if (commande.equalsIgnoreCase("exit")) // commande "exit" detectée ...
-					System.exit(0); // ... on ferme alors le serveur
+				else if (commande.equalsIgnoreCase("/total"))
+					System.out.println(this.chat.getNbConnectedUsers()+ " sont connectés actuellement.");
+				
+				//On ferme le serveur
+				else if (commande.equalsIgnoreCase("/exit"))
+					System.exit(0);
+				
+				//La commande n'existe pas
 				else
 				{
-					// si la commande n'existe pas, on informe l'utilisateur et on lui donne une aide
 					System.out.println("Cette commande n'est pas supportee");
 					aide();
 				}
-				System.out.flush(); // on affiche tout ce qui est en attente dans le flux
+				System.out.flush();
 			}
 		}
 		catch (IOException | SauvegarderChatException e) {}

@@ -53,6 +53,7 @@ public class ClientThread implements Runnable{
 					break;
 				case "3":
 					emission.writeUTF("Au revoir !");
+					emission.writeUTF("/quit");
 					communication.close();
 					System.exit(0);
 				default :
