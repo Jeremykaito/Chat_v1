@@ -10,7 +10,7 @@ public class MainClient {
 		int port=2002;
 		String serveur = "127.0.0.1";
 		try {
-			ClientReadingThread client = new ClientReadingThread(port,serveur);
+			 new Thread(new ClientReadingThread(port,serveur)).start();
 		} catch (UnknownHostException e) {
 			System.out.println("Serveur inconnu");
 		} catch (IOException e) {
