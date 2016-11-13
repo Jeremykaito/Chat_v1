@@ -34,6 +34,8 @@ public class ClientThread implements Runnable{
 		this.communication=com;
 		this.chat=chat;
 		this.threads=threads;
+		this.nom="";
+		this.topic="";
 	}
 
 	/**
@@ -83,6 +85,9 @@ public class ClientThread implements Runnable{
 					emission.close();
 					reception.close();
 					communication.close();
+					
+					//On sauvegarde le chat
+					chat.sauvegarderChat();
 					System.exit(0);
 					
 				default :
@@ -162,7 +167,7 @@ public class ClientThread implements Runnable{
 	public void  vue_chat() throws IOException{
 
 		boolean ouvert = true;
-		emission.writeUTF("- Bonjour "+ nom+" -");
+		emission.writeUTF("\n- Bonjour "+ nom+" -");
 		
 		while(ouvert){
 			//Affichage informations
@@ -191,6 +196,7 @@ public class ClientThread implements Runnable{
 
 			case "3":
 				emission.writeUTF("Déconnexion...");
+				nom="";
 				ouvert = false;
 				break;
 
@@ -222,7 +228,7 @@ public class ClientThread implements Runnable{
 			}
 		
 		//Saisie des données par l'utilisateur
-		emission.writeUTF("Veuillez entrer le titre :");
+		emission.writeUTF("\nVeuillez entrer le titre :");
 		titre = reception.readUTF();
 
 		//Si le topic existe, l'utilisateur le rejoint
@@ -263,12 +269,12 @@ public class ClientThread implements Runnable{
 		boolean ouvert =true;
 
 		//Message de bienvenue
-		emission.writeUTF("Bienvenue dans le topic " + topic);
+		emission.writeUTF("\nBienvenue dans le topic " + topic + "\n");
 		emission.writeUTF("----------------------------------------------------------");
 		emission.writeUTF("Commandes : ");
 		emission.writeUTF("/exit pour quitter ce topic");
-		emission.writeUTF("----------------------------------------------------------");
-
+		emission.writeUTF("----------------------------------------------------------\n");
+		
 		emission.writeUTF(chat.getTopicMessages(topic));
 
 		do{
@@ -289,7 +295,6 @@ public class ClientThread implements Runnable{
 					if (clientThread.topic.equals(this.topic) && !clientThread.nom.equals(this.nom)) {
 						clientThread.emission.writeUTF(nom + " : " + msg);
 					}
-
 				}
 			}
 		}while (ouvert);

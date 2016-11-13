@@ -31,7 +31,7 @@ public class MainClient implements Runnable {
 
 		//Initialisation
 		portNumber = 2002;
-		host = "25.106.191.226";
+		host = "localhost";
 		commande = new Scanner(System.in);
 		ouvert= true;
 
