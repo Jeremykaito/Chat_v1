@@ -6,11 +6,11 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
- * ClientReadingThread : thread côté client qui communique avec le serveur
+ * MainClient : thread côté client qui communique avec le serveur
  * @author Jérémy Ha, Annelyse Nugue
  * @date 13/11/2016
  */
-public class ClientReadingThread implements Runnable {
+public class MainClient implements Runnable {
 
 	//Variables de communication
 	private static Socket communication;
@@ -43,7 +43,7 @@ public class ClientReadingThread implements Runnable {
 			reception = new DataInputStream(communication.getInputStream());
 			
 			//On démarre un nouveau thread pour afficher les messages du serveur
-			new Thread(new ClientReadingThread()).start();
+			new Thread(new MainClient()).start();
 			
 			//On envoie au serveur le texte écrit par l'utilisateur 
 			while (ouvert) {

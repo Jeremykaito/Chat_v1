@@ -6,9 +6,14 @@ import java.util.ArrayList;
 
 import Exceptions.ChargerChatException;
 
-
+/**
+ * ServeurChat : le serveur qui attend les connexions clients
+ * @author Jérémy Ha, Annelyse Nugue
+ * @date 13/11/2016
+ */
 public class ServeurChat {
 
+	//Variables
 	private int port;
 	private static ServerSocket sock;
 	private Chat chat;
