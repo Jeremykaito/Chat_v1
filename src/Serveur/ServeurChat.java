@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import Client.ClientReadingThread;
 import Client.ClientThread;
 import Exceptions.ChargerChatException;
 
@@ -13,7 +14,7 @@ public class ServeurChat {
 	private int port;
 	private ServerSocket sock;
 	private Chat chat;
-	private static final ArrayList<ServeurThread> threads = new ArrayList<ServeurThread>();
+	private static final ArrayList<ClientThread> threads = new ArrayList<ClientThread>();
 	
 	/**
 	 * @brief Constructeur du serveur
@@ -37,7 +38,7 @@ public class ServeurChat {
 			//Ouverture de la connexion
 			Socket communication = sock.accept();
 			//Lancement d'un nouveau Thread
-			   ServeurThread serveurThread = new ServeurThread(communication,chat, threads);
+			   ClientThread serveurThread = new ClientThread(communication,chat, threads);
 			   Thread t = new Thread(serveurThread);
 			   threads.add(serveurThread);
 			   t.start();
