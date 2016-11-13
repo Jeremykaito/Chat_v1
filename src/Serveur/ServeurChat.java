@@ -2,7 +2,9 @@ package Serveur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import Client.ClientThread;
 import Exceptions.ChargerChatException;
 
 
@@ -11,6 +13,8 @@ public class ServeurChat {
 	private int port;
 	private ServerSocket sock;
 	private Chat chat;
+	private static final ArrayList<ServeurThread> threads = new ArrayList<ServeurThread>();
+	
 	/**
 	 * @brief Constructeur du serveur
 	 * @param port
@@ -33,7 +37,10 @@ public class ServeurChat {
 			//Ouverture de la connexion
 			Socket communication = sock.accept();
 			//Lancement d'un nouveau Thread
-			new Thread(new ServiceChat(communication,chat)).start();
+			   ServeurThread serveurThread = new ServeurThread(communication,chat, threads);
+			   Thread t = new Thread(serveurThread);
+			   threads.add(serveurThread);
+			   t.start();
 			System.out.println("Un utilisateur accède  au Chat. Ouverture d'une connexion...");
 		}while(true);
 	}

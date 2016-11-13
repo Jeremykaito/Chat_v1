@@ -3,14 +3,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
-public class ServiceChat implements Runnable{
+public class ServeurThread implements Runnable{
 
 	private Socket communication;
 	private Chat chat;
 
-	public ServiceChat(Socket com, Chat chat){
+	public ServeurThread(Socket com, Chat chat,ArrayList<ServeurThread> threads){
 		this.communication=com;
 		this.chat=chat;
 	}
@@ -67,8 +68,9 @@ public class ServiceChat implements Runnable{
 					break;
 
 				case "listTopics" :
-					emission.writeUTF(chat.getTopics());
+					emission.writeUTF(chat.toStringUsers());
 					break;
+					
 				case "parler" :
 					message = reception.readUTF();
 					titre = reception.readUTF();
