@@ -95,7 +95,7 @@ public class Chat {
 	 * 
 	 */
 
-	public String toStringUsers() {
+	public String toStringTopics() {
 		String s ="";
 		if(!liste_topics.isEmpty()){
 			for(Topic t: liste_topics){
