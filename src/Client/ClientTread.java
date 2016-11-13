@@ -9,7 +9,7 @@ import java.util.Scanner;
 import Serveur.Utilisateur;
 
 
-public class ClientChat {
+public class ClientTread {
 
 	private Socket communication;
 	private DataOutputStream emission;
@@ -21,7 +21,7 @@ public class ClientChat {
 	private String nom;
 	private String topic;
 
-	public ClientChat(int port, String serveur) throws UnknownHostException, IOException{
+	public ClientTread(int port, String serveur) throws UnknownHostException, IOException{
 		this.serveur = serveur;
 		this.port = port ;
 
